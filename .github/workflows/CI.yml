@@ -1,0 +1,19 @@
+# Continuous Integration for repository
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # Runs AIO kubernetes build
+      - name: Run All in One
+        run: bash $GITHUB_WORKSPACE/aio.sh

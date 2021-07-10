@@ -1,0 +1,31 @@
+{{- define "role-webhook_admin" -}}
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels: {{- include "helpers.labels.labels" (dict "Global" $ "PartOf" "tekton-triggers") | nindent 4 }}
+  name: tekton-triggers-admin-webhook
+  namespace: {{ $.Release.Namespace }}
+rules:
+  - apiGroups:
+      - policy
+    resources:
+      - podsecuritypolicies
+    resourceNames:
+      - tekton-triggers
+    verbs:
+      - use
+  - apiGroups:
+      - "*"
+    resources:
+      - secrets
+    verbs:
+      - get
+      - list
+      - create
+      - update
+      - delete
+      - patch
+      - watch
+{{- end -}}
+{{- include "helpers.template.overlay" ( dict "Global" $ "template_definition" "role-webhook_admin" ) }}

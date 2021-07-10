@@ -1,0 +1,6 @@
+apiVersion: v2
+name: issuers
+description: A Helm chart for the certificate issuers
+type: application
+version: 0.1.0
+appVersion: 0.1.0

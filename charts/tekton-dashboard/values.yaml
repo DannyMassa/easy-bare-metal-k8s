@@ -1,0 +1,39 @@
+---
+config:
+  args:
+    external-logs: ''
+    log_format: json
+    log_level: info
+    logout_url: ''
+    namespace: ''
+    openshift: false
+    read_only: true
+    stream_logs: false
+
+images:
+  applications:
+    tekton_dashboard:
+      name: tektoncd/dashboard/cmd/dashboard
+      repo: gcr.io/tekton-releases/github.com
+      tag: v0.14.0
+  pull:
+    policy: IfNotPresent
+
+node_labels:
+  tekton_dashboard:
+    - key: node-role.kubernetes.io/master
+      value: ''
+
+params:
+  endpoints:
+    hostname: tekton.jarvis.local
+    tls:
+      enabled: false
+      issuer:
+        enabled: false
+        cluster: false
+        name: null
+      secret:
+        name: null
+
+over_rides: {}

@@ -1,0 +1,93 @@
+---
+config:
+  controller:
+    el_port: 8080
+    el_readtimeout: 5
+    el_writetimeout: 40
+    el_idletimeout: 120
+    el_timeouthandler: 30
+    failure_threshold: 1
+    period_seconds: 10
+    stderrthreshold: INFO
+  loglevel:
+    controller: info
+    eventlistener: info
+    webhook: info
+  observability:
+    metrics.backend-destination: prometheus
+  zap_logger_config:
+    development: false
+    encoderConfig:
+      callerEncoder: ''
+      callerKey: caller
+      durationEncoder: ''
+      levelEncoder: ''
+      levelKey: level
+      lineEnding: ''
+      messageKey: msg
+      nameKey: logger
+      stacktraceKey: stacktrace
+      timeEncoder: iso8601
+      timeKey: ts
+    encoding: json
+    errorOutputPaths:
+      - stderr
+    level: info
+    outputPaths:
+      - stdout
+    sampling:
+      initial: 100
+      thereafter: 100
+
+params:
+  endpoints:
+    ports:
+      metrics:
+        port: 9090
+        target: 9090
+        scheme: http
+      profiling:
+        port: 8008
+        scheme: http
+      webhook:
+        port: 443
+        target: 8443
+        scheme: https
+      interceptors:
+        port: 80
+        target: 8082
+
+images:
+  applications:
+    tekton_controller:
+      name: tektoncd/triggers/cmd/controller
+      repo: gcr.io/tekton-releases/github.com
+      tag: v0.12.0
+    tekton_eventlistener:
+      name: tektoncd/triggers/cmd/eventlistenersink
+      repo: gcr.io/tekton-releases/github.com
+      tag: v0.12.0
+    tekton_webhook:
+      name: tektoncd/triggers/cmd/webhook
+      repo: gcr.io/tekton-releases/github.com
+      tag: v0.12.0
+    tekton_interceptors:
+      name: tektoncd/triggers/cmd/interceptors
+      repo: gcr.io/tekton-releases/github.com
+      tag: v0.12.0
+    tekton_eventlistenersink:
+      name: tektoncd/triggers/cmd/eventlistenersink
+      repo: gcr.io/tekton-releases/github.com
+      tag: v0.12.0
+  pull:
+    policy: IfNotPresent
+
+node_labels:
+  tekton_controller:
+    - key: node-role.kubernetes.io/master
+      value: ''
+  tekton_webhook:
+    - key: node-role.kubernetes.io/master
+      value: ''
+
+over_rides: {}

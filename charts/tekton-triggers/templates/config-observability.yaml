@@ -1,0 +1,11 @@
+{{- define "config-observability" -}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-observability-triggers
+  labels: {{- include "helpers.labels.labels" (dict "Global" $ "PartOf" "tekton-triggers") | nindent 4 }}
+data:
+{{- $.Values.configobservability | toYaml | nindent 2 }}
+{{- end -}}
+{{- include "helpers.template.overlay" ( dict "Global" $ "template_definition" "config-observability" ) }}
